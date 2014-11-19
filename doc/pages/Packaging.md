@@ -20,7 +20,8 @@ $ opam pin remove <package>
 
 Publish to the OPAM repository:
 * Fork [https://github.com/ocaml/opam-repository]()
-* Add your `opam`, `descr` and `url` files to `packages/<pkgname>/<pkgname>.<version>`
+* Add your `opam`, `descr` and `url` files to
+  `packages/<pkgname>/<pkgname>.<version>`
 * File a [pull-request](https://github.com/ocaml/opam-repository/compare/)
 
 
@@ -32,9 +33,9 @@ An OPAM package is basically just a bunch of data on a software project:
 * Build, install and remove instructions
 * Some additional information (bugtracker, homepage, license, doc...)
 
-This document will go through a simple way to get it in the right format, whether
-you are packaging your own project or someone else's. It's not a complete guide
-to the opam file format.
+This document will go through a simple way to get it in the right format,
+whether you are packaging your own project or someone else's. It's not a
+complete guide to the `opam` file format.
 
 
 ## Creating a local package
@@ -70,7 +71,7 @@ $ opam pin add <project> . -n
 ```
 (`-n` tells OPAM to not try and install just yet, we'll get to it later)
 
-### The "opam" file
+### The `opam` file
 
 At this stage, OPAM will be looking for metadata for the package `<project>`, on
 its repository and in the source directory. Not finding any, it will open an
@@ -145,13 +146,13 @@ You can now check that everything is installed as expected. Do also check that
 If you need to change anything, simply do
 
 ```
-opam pin edit <project>
+$ opam pin edit <project>
 ```
 
 to get back to editing the `opam` file. Manually editing the `opam` file in
 your source tree also works.
 
-So far, so good ! You may have missed dependencies in case they were already
+So far, so good! You may have missed dependencies in case they were already
 installed on your system, but that will be checked automatically by the
 continuous integration system when you attempt to publish your package to the
 OPAM repository, so don't worry.
@@ -159,12 +160,12 @@ OPAM repository, so don't worry.
 ## Getting a full OPAM package
 
 There are still two things missing for a complete package.
-* An appealing description. Put it in a simple utf-8 text file named `descr`.
-  Like for git commits, the first line is a short summary, and a longer text may
+* An appealing description. Put it in a simple UTF-8 text file named `descr`.
+  Like for Git commits, the first line is a short summary, and a longer text may
   follow.
 * An URL where OPAM may download the project source for the release. If your
-  project is hosted on github, pushing `TAG` will automatically provide
-  https://github.com/me/project/archive/TAG.zip. This shoud be put in
+  project is hosted on GitHub, pushing `TAG` will automatically provide
+  https://github.com/me/project/archive/TAG.zip. This should be put in
   an `url` file, with a format similar to that of `opam`:
 
     ```
@@ -175,13 +176,13 @@ There are still two things missing for a complete package.
   The checksum is a simple md5 of the archive, which you can obtain with:
 
     ```
-    curl -L "https://address/of/project.1.0.tar.gz" | md5sum
+    $ curl -L "https://address/of/project.1.0.tar.gz" | md5sum
     ```
-That's it !
+That's it!
 
 ## Publishing
 
-Publishing is currently handled through Github, using the pull-request
+Publishing is currently handled through GitHub, using the pull-request
 mechanism. If you're not familiar with it, it is a fancy way to:
 * Make a patch to the OPAM repository
 * Propose this patch for review and integration. This will also trigger tests
@@ -208,12 +209,12 @@ Here is how to do it from scratch:
     $ git commit -m "Added new fancy <project>.<version>"
     ```
 
-4.  Sending that back to github is just a matter of running `git push`
+4.  Sending that back to GitHub is just a matter of running `git push`
 
-5.  Back to the web interface, refresh, hit the `Pull request` button, check your
-    changes and confirm;
+5.  Back to the web interface, refresh, hit the `Pull request` button, check
+    your changes and confirm;
 
-6.  Wait for feedback !
+6.  Wait for feedback!
 
 Don't forget to `opam pin remove <project>` once your project is on the
 repository, if you don't want to continue using your local version. Remember
@@ -241,7 +242,7 @@ source if any, but otherwise only what is in the OPAM repository matters. Use
     ```
   Don't forget to `opam pin remove <project>`, and test your changes to the repo
   directly. You'll also need to `opam update my-dev-repo` each time to keep OPAM
-  in sync (`opam update` synches all repos, this will be faster).
+  in sync (`opam update` syncs all repos, this will be faster).
 
 * Pins can also be used to try out experimental changes to a project with
   minimal effort: you can pin to a git repository and even to a specific branch,
@@ -253,15 +254,15 @@ source if any, but otherwise only what is in the OPAM repository matters. Use
     $ opam pin project git://github.com/Joe/project.git#new-feature
     ```
   and OPAM will use that to get the source (and possibly updated metadata) of
-  the package; this works with any branch of any git repo, it's not github
+  the package; this works with any branch of any Git repo, it's not GitHub
   specific.
-* We've been focusing on git above, but OPAM can handle darcs and mercurial
+* We've been focusing on git above, but OPAM can handle Darcs and Mercurial
   repositories too, using `darcs://` and `hg://`.
 
-## More on opam files
+## More on `opam` files
 
-The opam files can express much more than what was shown above. Without getting
-into too much details, here are some of the most useful features:
+The `opam` files can express much more than what was shown above. Without
+getting into too much details, here are some of the most useful features:
 
 * **Version constraints**: an optional version constraint can be added after any
   package name in `depends`: simply write `"package" {>= "3.2"}`. Warning,
@@ -275,7 +276,7 @@ into too much details, here are some of the most useful features:
   run-time dependency to this package: it is required but won't trigger rebuilds
   of your package when changed.
 * **OS and OCaml constraints**: The `available` field is a formula that
-  determines your package availability based on the os, OCaml version or other
+  determines your package availability based on the OS, OCaml version or other
   constraints. For example:
 
     ```
@@ -288,7 +289,7 @@ into too much details, here are some of the most useful features:
   require specific versions, add a `conflicts` field with the ones that won't
   work.
 * **Variables**: you can get a list of predefined variables that you can use in
-  your opam rules with `opam config list`.
+  your `opam` rules with `opam config list`.
 * **Filters**: full commands, or single commands arguments, may need to be
   omitted depending on the environment. This uses the same optional argument
   syntax as above, postfix curly braces, with boolean conditions:
